@@ -1,4 +1,6 @@
-This is my sequence diagram for when a new note is submitted on the page https://studies.cs.helsinki.fi/exampleapp/notes:
+0.4: New note diagram
+
+This is my sequence diagram for when a new note is submitted on the page https://studies.cs.helsinki.fi/exampleapp/notes :
 
 
 ```mermaid
@@ -6,7 +8,7 @@ sequenceDiagram
     participant browser
     participant server
 
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_notes
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
 
     Note left of server: The server processes the POST request
