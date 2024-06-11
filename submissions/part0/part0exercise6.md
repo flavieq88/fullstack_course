@@ -1,4 +1,4 @@
-0.6: New not in Single page app diagram
+0.6: New note in Single page app diagram
 
 This is my sequence diagram for when a new note is submitted on the page https://studies.cs.helsinki.fi/exampleapp/spa :
 
@@ -17,5 +17,7 @@ sequenceDiagram
 
     server-->>browser: status code 201 created
     deactivate server
+
+    Note right of browser: browser stays on same page, no more requests
     
 ```
