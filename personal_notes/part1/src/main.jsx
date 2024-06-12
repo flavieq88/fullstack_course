@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client'
 
 import App from './App'
 
-let counter1 = 1
+let counter1 = 0
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 const refresh = () => {
