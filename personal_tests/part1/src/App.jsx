@@ -15,12 +15,30 @@ const Display = ({counter}) => { //destructuring props = {counter}
     )
 }
 
-const Button = (props) => {
+const Button = ({ onClick, text }) => {
   return (
-    <button onClick = {props.onClick}>
-      {props.text}
+    <button onClick = {onClick}>
+      {text}
     </button>
   )
+}
+
+const History = (props) => {
+  if (props.allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+  
+  return (
+    <div>
+      button press history: {props.allClicks.join(' ')}
+    </div>
+  )
+
+  
 }
 
 const App = (props) => {
@@ -36,6 +54,21 @@ const App = (props) => {
   const increaseOne = () => setCounter(counter + 1)
   
   const setZero = () => setCounter(0)
+
+  //more state components
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const [allClicks, setAll] = useState([])
+
+  const handleLeftClick = () => {
+    setAll(allClicks.concat("L"))
+    setLeft(left + 1)
+  }
+
+  const handleRightClick = () => {
+    setAll(allClicks.concat("R"))
+    setRight(right + 1)
+  }
 
   return (
     <>
@@ -60,6 +93,19 @@ const App = (props) => {
         onClick={() => setCounter(counter - 1)} //only one statement so we could just put here directly
         text='minus'
       />
+  
+      <div>
+        <p>
+          {left}
+          <Button onClick={handleLeftClick} text="left" />
+          <Button onClick={handleRightClick} text="right" />
+          {right}
+        </p>
+        <History allClicks={allClicks} />
+      </div>
+      
+      hello
+      
     </>
   )
 }
