@@ -3,7 +3,7 @@ const Filter = ({ filter, handleNewFilter }) => {
       <form> filter the names with
         <input value={filter} onChange={handleNewFilter}/>
       </form>
-    )
-  }
+    );
+  };
 
-  export default Filter
+  export default Filter;

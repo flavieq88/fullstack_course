@@ -8,7 +8,6 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    console.log('effect');
     noteService
       .getAll()
       .then(initialNotes => {
