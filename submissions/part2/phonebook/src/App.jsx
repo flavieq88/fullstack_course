@@ -27,8 +27,11 @@ const App = () => {
        number: newNumber,
     };
     
-    if (persons.map((person) => person.name.toLowerCase()).includes(newName.toLowerCase())) {
-      window.alert(`${newName} is already added to phonebook`);
+    if (persons.map((person) => person.name.toLowerCase()).includes(newName.toLowerCase())) { //already in phonebook
+      if (window.confirm(`${newName} is already in the phonebook. Would you like to replace old number with new number?`)) {
+        const [double] = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase());
+        updateNumber(double, newNumber);
+      };
       setNewName('');
       setNewNumber('');
     }
@@ -59,6 +62,13 @@ const App = () => {
       personsService.deletePerson(id);
       setPersons(persons.filter(n => n.id !== id));
     };
+  };
+
+  const updateNumber = (person, number) => {
+    const newObject = { ...person, number:number}
+    personsService
+      .update(person.id, newObject)
+      .then(response => setPersons(persons.map(p => p.id !== person.id ? p : response.data)));
   };
   
 
