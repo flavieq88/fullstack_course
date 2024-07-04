@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "12 234534 234",
-      "id": "1"
-    },
-    {
       "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": "2"
@@ -16,14 +11,14 @@
       "id": "4"
     },
     {
-      "id": "8fd5",
-      "name": "Flavie Qin",
-      "number": "123 534 1234"
-    },
-    {
       "id": "b86d",
       "name": "Ambulance",
       "number": "911"
+    },
+    {
+      "id": "294c",
+      "name": "Arto Hellas",
+      "number": "123456789"
     }
   ]
 }

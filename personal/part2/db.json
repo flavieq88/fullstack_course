@@ -18,7 +18,7 @@
     {
       "id": "c577",
       "content": "I really love my cat MIMI",
-      "important": false
+      "important": true
     },
     {
       "id": "1e08",
@@ -38,12 +38,22 @@
     {
       "id": "7516",
       "content": "heello",
-      "important": true
+      "important": false
     },
     {
       "id": "8ada",
       "content": "hi",
       "important": false
+    },
+    {
+      "id": "c1fc",
+      "content": "cyrus says hello",
+      "important": false
+    },
+    {
+      "id": "f34c",
+      "content": "My cat is the smartest cat in the world",
+      "important": true
     }
   ]
 }
