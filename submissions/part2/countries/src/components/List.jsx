@@ -1,6 +1,6 @@
 import Country from './Country'
 
-const List = ({ matches }) => {
+const List = ({ matches, handleShow }) => {
     
     if (matches.length === 1) {
       const country = matches[0]
@@ -17,7 +17,7 @@ const List = ({ matches }) => {
 
     if (matches.length <= 10) { //this includes empty matches
       return ( 
-        <div>{matches.map(country => <div key={country.name.common}>{country.name.common}</div>)}</div>
+        <div>{matches.map(country => <div key={country.name.common}>{country.name.common} <button onClick={() => handleShow(country)}>show</button></div>)}</div>
       );
     };
 

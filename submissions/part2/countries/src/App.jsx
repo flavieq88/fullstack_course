@@ -34,11 +34,15 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+  const handleShow = (country) => {
+    setMatches([country])
+  }
+
 
   return (
     <div>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <List matches={matches} />
+      <List matches={matches} handleShow={handleShow}/>
     </div>
   );
 };
