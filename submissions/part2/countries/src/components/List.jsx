@@ -11,6 +11,7 @@ const List = ({ matches, handleShow }) => {
           area={country.area}
           languages={country.languages}
           flag={country.flags.png}
+          latlng={country.latlng}
         />
       )
     };
