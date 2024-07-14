@@ -1,5 +1,7 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/notes';
+// const baseUrl = 'http://localhost:3001/notes'; if using the json db
+// const baseUrl = "http://localhost:3001/api/notes"; if using the backend locally hosted
+const baseUrl = '/api/notes';
 
 const getAll = () => {
     const nonExisting = {
