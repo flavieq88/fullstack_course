@@ -10,11 +10,12 @@
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Flavie Qin",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
