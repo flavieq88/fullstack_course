@@ -47,9 +47,16 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
+      })
+      .catch(error => {
+        setErrorMessage(
+          `Length of note must be at least 5 characters`
+        );
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000);
+        setNewNote('');
       });
-
-    
   };
 
   const handleNoteChange = (event) => {
