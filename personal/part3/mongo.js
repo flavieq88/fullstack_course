@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 if (process.argv.length<3) {
-    console.log("give password as argument");
+    console.log('give password as argument');
     process.exit(1);
 };
 
@@ -18,9 +18,9 @@ const noteSchema = new mongoose.Schema({
     important: Boolean,
 });
 
-const Note = mongoose.model("Note", noteSchema);
+const Note = mongoose.model('Note', noteSchema);
 
-/* 
+/*
 const note = new Note({
     content: "Browser can only execute JavaScript",
     important: false,
