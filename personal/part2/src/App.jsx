@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <div style={footerStyle}>
       <br />
-      <em>My Note app following the Department of Computer Science, University of Helsinki 2024</em>
+      <em>Note app following the FullStackOpen course of the Department of Computer Science, University of Helsinki 2024</em>
     </div>
   )
 }
