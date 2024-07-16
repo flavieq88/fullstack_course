@@ -25,6 +25,10 @@ export default [
       'arrow-spacing': [
         'error', { 'before': true, 'after': true },
       ],
+      '@stylistic/js/indent': [
+        'error',
+        4
+      ],
       '@stylistic/js/linebreak-style': [
         'error',
         'unix'
@@ -32,6 +36,10 @@ export default [
       '@stylistic/js/quotes': [
         'error',
         'single'
+      ],
+      '@stylistic/js/semi': [
+        'error',
+        'always'
       ],
       'no-console': 'off',
     },
