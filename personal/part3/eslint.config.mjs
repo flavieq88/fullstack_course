@@ -27,7 +27,7 @@ export default [
       ],
       '@stylistic/js/indent': [
         'error',
-        4
+        2
       ],
       '@stylistic/js/linebreak-style': [
         'error',
