@@ -1,0 +1,14 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Dense sets of natural numbers with unusually large least common multiples",
+  "author": "Terence Tao",
+  "url": "https://terrytao.wordpress.com/2024/07/08/dense-sets-of-natural-numbers-with-unusually-large-least-common-multiples/",
+  "likes": 3
+}
+
+###
+GET http://localhost:3003/api/blogs
+
+###

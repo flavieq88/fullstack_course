@@ -39,7 +39,7 @@ notesRouter.post('/', (request, response, next) => {
 
 notesRouter.delete('/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end();
     })
     .catch(error => next(error));
@@ -59,6 +59,5 @@ notesRouter.put('/:id', (request, response, next) => {
     })
     .catch(error => next(error));
 });
-
 
 module.exports = notesRouter;
