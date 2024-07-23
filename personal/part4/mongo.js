@@ -28,7 +28,7 @@ const note = new Note({
 note.save().then(() => {
   console.log('note saved!');
   mongoose.connection.close();
-})
+});
 
 /*
 Note.find({}).then(result => {
