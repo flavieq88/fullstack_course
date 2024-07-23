@@ -12,7 +12,7 @@ const initialBlogs = [
     author: "John Mitzewich",
     url: "https://www.allrecipes.com/recipe/237237/chef-johns-peach-tartlets/",
     likes: 14
-  }  
+  }
 ];
 
 const nonExistingId = async () => {
@@ -26,7 +26,7 @@ const nonExistingId = async () => {
 const blogsInDb = async () => {
   const blogs = await Blog.find({});
   return blogs.map(blog => blog.toJSON());
-}
+};
 
 module.exports = {
   initialBlogs, nonExistingId, blogsInDb

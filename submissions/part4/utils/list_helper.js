@@ -19,7 +19,7 @@ const favoriteBlog = (blogs) => {
       maxLikes = blog.likes;
     };
   });
-  return favorite
+  return favorite;
 };
 
 const mostBlogs = (blogs) => {
@@ -27,8 +27,8 @@ const mostBlogs = (blogs) => {
   blogs.forEach(blog => {
     const author = blog.author;
     dictionary[author] = (dictionary[author] === undefined)
-    ? 1
-    : dictionary[author] + 1;
+      ? 1
+      : dictionary[author] + 1;
   });
 
   let popularAuthor = '';
@@ -49,8 +49,8 @@ const mostLikes = (blogs) => {
   blogs.forEach(blog => {
     const author = blog.author;
     dictionary[author] = (dictionary[author] === undefined)
-    ? blog.likes
-    : dictionary[author] + blog.likes;
+      ? blog.likes
+      : dictionary[author] + blog.likes;
   });
 
   let popularAuthor = '';
