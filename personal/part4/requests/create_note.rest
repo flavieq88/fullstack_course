@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NisdfdssInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YTE2MTVkNWU4YWFmYzBlNTkyNDZmOCIsImlhdCI6MTcyMTg3ODA3Nn0.rIFgskwrihneOSRYsKib8xpkFeZYdLaN31g_GkmjOGc
 
 {
-    "content": "I love my cat",
-    "important": false,
-    "userId": "66a1615d5e8aafc0e59246f8"
+    "content": "this is supposed to fail",
+    "important": false
 }
 
 ###
