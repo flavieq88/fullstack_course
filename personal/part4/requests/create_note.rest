@@ -2,9 +2,10 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "VSCode REST client is a pretty handy tool",
-    "important": false
+    "content": "I love my cat",
+    "important": false,
+    "userId": "66a1615d5e8aafc0e59246f8"
 }
 
 ###
-DELETE http://localhost:3001/api/notes/6696b674287f8a47cec41faf
+DELETE http://localhost:3001/api/notes/66a165d599bab93113b6d7eb
