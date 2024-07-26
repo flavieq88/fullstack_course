@@ -14,8 +14,8 @@ blogsRouter.post('/', async (request, response, next) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET);
     if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
-    }
+      return response.status(401).json({ error: 'token invalid' });
+    };
     const user = await User.findById(decodedToken.id);
 
     const blog = new Blog({
@@ -26,15 +26,12 @@ blogsRouter.post('/', async (request, response, next) => {
       user: user.id
     });
 
-    try {
-      const result = await blog.save();
-      user.blogs = user.blogs.concat(result._id);
-      await user.save();
+    const result = await blog.save();
+    user.blogs = user.blogs.concat(result._id);
+    await user.save();
 
-      response.status(201).json(result);
-    } catch(exception) {
-      next(exception);
-    };
+    response.status(201).json(result);
+
   } catch(exception) {
     next(exception);
   };  
@@ -42,8 +39,22 @@ blogsRouter.post('/', async (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    await Blog.findByIdAndDelete(request.params.id);
-    response.status(204).end();
+    // first get the token
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!decodedToken.id) { //no token = invalid action
+      return response.status(401).json({ error: 'token invalid' })
+    };
+
+    const user = await User.findById(decodedToken.id);
+    
+    const blog = await Blog.findById(request.params.id);
+    
+    if (blog.user.toString() === user.id.toString()) {
+      await Blog.findByIdAndDelete(request.params.id);
+      response.status(204).end();
+    } else {
+      response.status(401).json({ error: 'invalid user for this action' });
+    };
   } catch(exception) {
     next(exception);
   };
