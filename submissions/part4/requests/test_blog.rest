@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YTNmZDhmZjljNzAyMWM4MzMyMDc5YSIsImlhdCI6MTcyMjAyNzE3MH0.bMrgIs0ir3V76AGa1S6LHBocWF74rXHH67GRgJlWE38
 
 {
   "title": "Dense sets of natural numbers with unusually large least common multiples",
