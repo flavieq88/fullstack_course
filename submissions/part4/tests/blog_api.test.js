@@ -1,6 +1,7 @@
 const { test, after, beforeEach, describe } = require('node:test');
 const assert = require('node:assert');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const helper = require('./test_helper');
 const supertest = require('supertest');
 const app = require('../app');
@@ -8,17 +9,18 @@ const app = require('../app');
 const api = supertest(app);
 
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
-beforeEach(async () => {
-  await Blog.deleteMany({});
-
-  for (let blog of helper.initialBlogs) {
-    let blogObject = new Blog(blog);
-    await blogObject.save();
-  };
-});
 
 describe('when there is initially some blogs saved', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({});
+  
+    for (let blog of helper.initialBlogs) {
+      let blogObject = new Blog(blog);
+      await blogObject.save();
+    };
+  });
 
   test('blogs are returned as json', async () => {
     await api
@@ -140,6 +142,151 @@ describe('when there is initially some blogs saved', () => {
         .expect('Content-Type', /application\/json/);
     });
   });
+});
+
+describe('when there is initially one user saved in the database', () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+
+    const user = new User({
+      username: 'root',
+      name: 'superuser',
+      passwordHash: await bcrypt.hash('123456789', 10)
+    });
+
+    await user.save();
+  });
+
+  test('users are returned as json', async () => {
+    await api
+      .get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
+
+  test('all users are returned', async () => {
+    const response = await api.get('/api/users');
+    assert.strictEqual(response.body.length, 1);
+  });
+
+  describe('addition of a new user', () => {
+    test('saving a new valid username works', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        username: 'flavieq',
+        name: 'Flavie Qin',
+        password: 'asdghersdfg'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length + 1, usersAtEnd.length);
+
+      const usernames = usersAtEnd.map(r => r.username);
+      assert(usernames.includes('flavieq'));
+    });
+
+    test('fails with non unique username', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        username: 'root',
+        name: 'Flavie Qin',
+        password: 'asdghersdfg'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length, usersAtEnd.length);
+    });
+
+    test('fails with no given username', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        name: 'Flavie Qin',
+        password: 'asdghersdfg'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length, usersAtEnd.length);
+    });
+
+    test('fails with username too short', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        username: '12',
+        name: 'Flavie Qin',
+        password: 'asdghersdfg'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length, usersAtEnd.length);
+    });
+
+    test('fails with password missing', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        username: 'flavieq',
+        name: 'Flavie Qin'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length, usersAtEnd.length);
+    });
+
+    test('fails with password too short', async () => {
+      const usersAtStart = await helper.usersInDb();
+  
+      const user = {
+        username: 'flavieq',
+        name: 'Flavie Qin',
+        password: 'qw'
+      };
+  
+      await api
+        .post('/api/users')
+        .send(user)
+        .expect(400);
+      
+      const usersAtEnd = await helper.usersInDb();
+
+      assert.strictEqual(usersAtStart.length, usersAtEnd.length);
+    });
+  });
+  
 });
 
 after(async () => {
