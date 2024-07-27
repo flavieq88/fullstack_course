@@ -11,6 +11,8 @@ const api = supertest(app);
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
+let token = '';
+
 before(async () => {
   //must log in and get a token before starting tests
   await User.deleteMany({});
@@ -33,7 +35,7 @@ before(async () => {
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
     await Blog.deleteMany({});
-  
+
     for (let blog of helper.initialBlogs) {
       let blogObject = new Blog(blog);
       await blogObject.save();
@@ -147,7 +149,7 @@ describe('when there is initially some blogs saved', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(401)
+        .expect(401);
 
       const blogsAtEnd = await helper.blogsInDb();
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
@@ -166,7 +168,7 @@ describe('when there is initially some blogs saved', () => {
         .send(blogToDelete)
         .set('Authorization', `Bearer ${token}`)
         .expect(201);
-      
+
       const id = response.body.id;
 
       const blogsAtStart = await helper.blogsInDb();
@@ -191,7 +193,7 @@ describe('when there is initially some blogs saved', () => {
         .send(blogToDelete)
         .set('Authorization', `Bearer ${token}`)
         .expect(201);
-      
+
       const id = response.body.id;
 
       const blogsAtStart = await helper.blogsInDb();
@@ -217,7 +219,7 @@ describe('when there is initially some blogs saved', () => {
         .send(updatedBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/);
-      
+
       const blogsAtEnd = await helper.blogsInDb();
       const finalBlog = blogsAtEnd[0];
 
@@ -269,19 +271,19 @@ describe('when there is initially one user saved in the database', () => {
   describe('addition of a new user', () => {
     test('saving a new valid username works', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         username: 'flavieq',
         name: 'Flavie Qin',
         password: 'asdghersdfg'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(201)
         .expect('Content-Type', /application\/json/);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length + 1, usersAtEnd.length);
@@ -292,18 +294,18 @@ describe('when there is initially one user saved in the database', () => {
 
     test('fails with non unique username', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         username: 'root',
         name: 'Flavie Qin',
         password: 'asdghersdfg'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(400);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length, usersAtEnd.length);
@@ -311,17 +313,17 @@ describe('when there is initially one user saved in the database', () => {
 
     test('fails with no given username', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         name: 'Flavie Qin',
         password: 'asdghersdfg'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(400);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length, usersAtEnd.length);
@@ -329,18 +331,18 @@ describe('when there is initially one user saved in the database', () => {
 
     test('fails with username too short', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         username: '12',
         name: 'Flavie Qin',
         password: 'asdghersdfg'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(400);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length, usersAtEnd.length);
@@ -348,17 +350,17 @@ describe('when there is initially one user saved in the database', () => {
 
     test('fails with password missing', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         username: 'flavieq',
         name: 'Flavie Qin'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(400);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length, usersAtEnd.length);
@@ -366,24 +368,24 @@ describe('when there is initially one user saved in the database', () => {
 
     test('fails with password too short', async () => {
       const usersAtStart = await helper.usersInDb();
-  
+
       const user = {
         username: 'flavieq',
         name: 'Flavie Qin',
         password: 'qw'
       };
-  
+
       await api
         .post('/api/users')
         .send(user)
         .expect(400);
-      
+
       const usersAtEnd = await helper.usersInDb();
 
       assert.strictEqual(usersAtStart.length, usersAtEnd.length);
     });
   });
-  
+
 });
 
 after(async () => {

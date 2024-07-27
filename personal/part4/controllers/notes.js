@@ -52,13 +52,13 @@ notesRouter.post('/', async (request, response, next) => {
     try {
       const savedNote = await note.save();
       user.notes = user.notes.concat(savedNote._id);
-      await user.save()
+      await user.save();
 
       response.status(201).json(savedNote);
     } catch(exception) {
       next(exception);
     };
-    
+
   } catch(exception) {
     next(exception);
   };

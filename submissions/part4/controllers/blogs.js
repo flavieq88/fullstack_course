@@ -29,19 +29,19 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response, next) 
 
   } catch(exception) {
     next(exception);
-  };  
+  };
 });
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, next) => {
   try {
     const user = request.user;
-    
+
     const blog = await Blog.findById(request.params.id);
 
     if (!blog) {
       return response.status(204).json({ error: 'blog already deleted from server' });
     };
-    
+
     if (blog.user.toString() === user.id.toString()) {
       await Blog.findByIdAndDelete(request.params.id);
       response.status(204).end();
