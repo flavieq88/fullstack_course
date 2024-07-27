@@ -138,8 +138,29 @@ describe('when there is initially some blogs saved', () => {
 
       await api
         .put(`/api/blogs/${updatedBlog.id}`)
+        .send(updatedBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/);
+      
+      const blogsAtEnd = await helper.blogsInDb();
+      const finalBlog = blogsAtEnd[0];
+
+      assert.strictEqual(blogToUpdate.likes + 1, finalBlog.likes);
+    });
+
+    test('fails with status 401 if non existing id', async () => {
+      const newBlog = {
+        title: 'hello this is a new blog',
+        author: 'John Doe',
+        url: 'https://wikipedia.org'
+      };
+
+      const badId = await helper.nonExistingId();
+
+      await api
+        .put(`/api/blogs/${badId}`)
+        .send(newBlog)
+        .expect(400);
     });
   });
 });

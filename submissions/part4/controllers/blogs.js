@@ -37,6 +37,10 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     const user = request.user;
     
     const blog = await Blog.findById(request.params.id);
+
+    if (!blog) {
+      return response.status(204).json({ error: 'blog already deleted from server' });
+    };
     
     if (blog.user.toString() === user.id.toString()) {
       await Blog.findByIdAndDelete(request.params.id);
@@ -53,11 +57,14 @@ blogsRouter.put('/:id', async (request, response, next) => {
   try {
     const body = request.body;
 
-    updatedBlog = await Blog.findByIdAndUpdate(
+    const updatedBlog = await Blog.findByIdAndUpdate(
       request.params.id,
       body,
       { new: true, runValidators: true, context: 'query' }
     );
+    if (!updatedBlog) {
+      return response.status(400).send({ error: 'blog not found' });
+    }
     response.json(updatedBlog);
 
   } catch(exception) {
