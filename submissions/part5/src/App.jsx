@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -11,6 +12,9 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const [notif, setNotif] = useState({ text: null, colour: "green" });
+
+  const timeNotif = 1500; //length of time in ms notification is displayed
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -41,11 +45,19 @@ const App = () => {
         'loggedBlogAppUser', JSON.stringify(user)
       );
 
+      setNotif({ text:`${user.name} successfully signed in`, colour:"green" });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
+
       setUser(user);
       setUsername('');
       setPassword('');
     } catch (exception) {
-      console.log('Wrong username or password');
+      setNotif({ text:"Wrong username or password", colour:"red" });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
       setPassword('');
     };
   };
@@ -53,6 +65,10 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogAppUser');
     setUser(null);
+    setNotif({ text:"Successfully signed out", colour:"green" });
+    setTimeout(() => {
+      setNotif({ ...notif, text: null })
+    }, timeNotif);
   };
 
   const addBlog = async (event) => {
@@ -71,12 +87,20 @@ const App = () => {
       setAuthor('');
       setUrl('');
 
+      setNotif({ text:`New blog "${returnedBlog.title}" by ${returnedBlog.author} added`, colour:"green" });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
+
     } catch (exception) {
-      console.log(exception.message);
+      setNotif({ text:'Failed to add blog', colour:'red' });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
       setTitle('');
       setAuthor('');
       setUrl('');
-    }
+    };
   };
 
 
@@ -84,9 +108,10 @@ const App = () => {
     return (
       <div>
         <h2>Log in to Blog application</h2>
+        <Notification text={notif.text} colour={notif.colour}/>
         <form onSubmit={handleLogin}>
           <div>
-            Username:
+            Username: 
               <input 
               type='text'
               value={username}
@@ -95,7 +120,7 @@ const App = () => {
               />
           </div>
           <div>
-            Password:
+            Password: 
               <input 
               type='password'
               value={password}
@@ -112,6 +137,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      <Notification text={notif.text} colour={notif.colour}/>
       <p>
         {user.name} is signed in.
         <button onClick={handleLogout}>Log out</button>
@@ -119,7 +145,7 @@ const App = () => {
       <h3>Create a new blog:</h3>
       <form onSubmit={addBlog}>
           <div>
-            Title:
+            Title: 
               <input 
               type='text'
               value={title}
@@ -128,7 +154,7 @@ const App = () => {
               />
           </div>
           <div>
-            Author:
+            Author: 
               <input 
               type='text'
               value={author}
@@ -137,7 +163,7 @@ const App = () => {
               />
           </div>
           <div>
-            URL:
+            URL: 
               <input 
               type='text'
               value={url}
