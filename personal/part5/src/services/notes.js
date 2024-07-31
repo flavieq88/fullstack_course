@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { response } from '../../../part4/app';
 // const baseUrl = 'http://localhost:3001/notes'; if using the json db
 // const baseUrl = "http://localhost:3001/api/notes"; if using the backend locally hosted
 const baseUrl = '/api/notes';
