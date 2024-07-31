@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -9,27 +11,27 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
   const [notif, setNotif] = useState({ text: null, colour: "green" });
 
   const timeNotif = 1500; //length of time in ms notification is displayed
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     );
   }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
+
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       blogService.setToken(user.token);
     };
   }, []);
+
+  const blogFormRef = useRef();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -71,21 +73,11 @@ const App = () => {
     }, timeNotif);
   };
 
-  const addBlog = async (event) => {
-    event.preventDefault();
-
+  const addBlog = async (blogObject) => {
     try {
-      const blogObject = {
-        title,
-        author,
-        url
-      };
-
+      blogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.create(blogObject);
       setBlogs(blogs.concat(returnedBlog));
-      setTitle('');
-      setAuthor('');
-      setUrl('');
 
       setNotif({ text:`New blog "${returnedBlog.title}" by ${returnedBlog.author} added`, colour:"green" });
       setTimeout(() => {
@@ -93,16 +85,16 @@ const App = () => {
       }, timeNotif);
 
     } catch (exception) {
+      if (exception.response.status === 401) {
+        window.localStorage.removeItem('loggedBlogAppUser');
+        setUser(null);
+      };
       setNotif({ text:'Failed to add blog', colour:'red' });
       setTimeout(() => {
         setNotif({ ...notif, text: null })
       }, timeNotif);
-      setTitle('');
-      setAuthor('');
-      setUrl('');
     };
   };
-
 
   if (user === null) {
     return (
@@ -142,37 +134,9 @@ const App = () => {
         {user.name} is signed in.
         <button onClick={handleLogout}>Log out</button>
       </p>
-      <h3>Create a new blog:</h3>
-      <form onSubmit={addBlog}>
-          <div>
-            Title: 
-              <input 
-              type='text'
-              value={title}
-              name='Title'
-              onChange={({ target }) => setTitle(target.value)}
-              />
-          </div>
-          <div>
-            Author: 
-              <input 
-              type='text'
-              value={author}
-              name='Author'
-              onChange={({ target }) => setAuthor(target.value)}
-              />
-          </div>
-          <div>
-            URL: 
-              <input 
-              type='text'
-              value={url}
-              name='URL'
-              onChange={({ target }) => setUrl(target.value)}
-              />
-          </div>
-          <button type="submit">Create</button>
-        </form>
+      <Togglable buttonLabel='Create new blog' ref={blogFormRef}>
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
       
       <br />
       <div>
