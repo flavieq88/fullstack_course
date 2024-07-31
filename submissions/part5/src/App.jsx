@@ -20,15 +20,11 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => {
       const sortedBlogs = [...blogs];
-      if (sorting==='likes') {
-        sortedBlogs.sort((a, b) => b[sorting] - a[sorting]);
-      } else {
-        sortedBlogs.sort((a, b) => a[sorting].localeCompare(b[sorting]));
-      };
-      
+      sortedBlogs.sort((a, b) => b[sorting] - a[sorting]);
       setBlogs(sortedBlogs);
     });
-  }, [blogs]);
+  }, []);
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -84,6 +80,14 @@ const App = () => {
 
   const selectSort = (state) => {
     setSorting(state);
+    const sortedBlogs = [...blogs];
+    if (state==='likes') {
+      sortedBlogs.sort((a, b) => b[state] - a[state]);
+    } else {
+      sortedBlogs.sort((a, b) => a[state].localeCompare(b[state]));
+    };
+    
+    setBlogs(sortedBlogs);
   };
 
   const addBlog = async (blogObject) => {
@@ -110,13 +114,17 @@ const App = () => {
   };
 
   const updateBlog = async (blogObject) => {
-    console.log(blogObject);
     try {
       const newBlog = { ...blogObject, user: blogObject.user.id };
       const returnedBlog = await blogService.update(newBlog);
-      returnedBlog.user = blogObject.user
-      setBlogs(blogs.map(blog => blog.id === blogObject.id ? returnedBlog : blog));
+      returnedBlog.user = blogObject.user;
+      const newBlogs = blogs.map(blog => blog.id === blogObject.id ? returnedBlog : blog);
+      if (sorting==='likes') {
+        newBlogs.sort((a, b) => b[sorting] - a[sorting]);
+      };
+      setBlogs(newBlogs);
     } catch (exception) {
+      console.log(exception)
       setNotif({ text:'This blog has already been deleted from server', colour:'red' });
       setTimeout(() => {
         setNotif({ ...notif, text: null })
