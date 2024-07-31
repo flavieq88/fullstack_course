@@ -45,7 +45,7 @@ const Blog = ({ blog, updateBlog }) => {
   return (
     <div style={openBlogStyle}>
       {blog.title}, by {blog.author} <br />
-      {blog.url} <br />
+      <a href={blog.url} target='_blank'>{blog.url}</a> <br />
       {blog.likes} like{blog.likes!==1 && 's'} <button onClick={() => handleLike(blog)}>Like</button><br />
       Blog added by user {blog.user.username} <br />
       <button onClick={toggleExtended}>Hide</button>

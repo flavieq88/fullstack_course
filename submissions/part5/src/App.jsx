@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
 import BlogForm from './components/BlogForm';
+import SortMenu from './components/SortMenu';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -12,14 +13,22 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null);
   const [notif, setNotif] = useState({ text: null, colour: "green" });
+  const [sorting, setSorting] = useState('likes');
 
   const timeNotif = 1500; //length of time in ms notification is displayed
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    );
-  }, []);
+    blogService.getAll().then(blogs => {
+      const sortedBlogs = [...blogs];
+      if (sorting==='likes') {
+        sortedBlogs.sort((a, b) => b[sorting] - a[sorting]);
+      } else {
+        sortedBlogs.sort((a, b) => a[sorting].localeCompare(b[sorting]));
+      };
+      
+      setBlogs(sortedBlogs);
+    });
+  }, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -73,6 +82,10 @@ const App = () => {
     }, timeNotif);
   };
 
+  const selectSort = (state) => {
+    setSorting(state);
+  };
+
   const addBlog = async (blogObject) => {
     try {
       blogFormRef.current.toggleVisibility();
@@ -115,24 +128,24 @@ const App = () => {
     return (
       <div>
         <h2>Log in to Blog application</h2>
-        <Notification text={notif.text} colour={notif.colour}/>
+        <Notification text={notif.text} colour={notif.colour} />
         <form onSubmit={handleLogin}>
           <div>
             Username: 
               <input 
-              type='text'
-              value={username}
-              name='Username'
-              onChange={({ target }) => setUsername(target.value)}
+                type='text'
+                value={username}
+                name='Username'
+                onChange={({ target }) => setUsername(target.value)}
               />
           </div>
           <div>
             Password: 
               <input 
-              type='password'
-              value={password}
-              name='Password'
-              onChange={({ target }) => setPassword(target.value)}
+                type='password'
+                value={password}
+                name='Password'
+                onChange={({ target }) => setPassword(target.value)}
               />
           </div>
           <button type="submit">Login</button>
@@ -154,6 +167,7 @@ const App = () => {
       
       <br />
       <div>
+        <SortMenu onSelect={selectSort} />
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
         )}
