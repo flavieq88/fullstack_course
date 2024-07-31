@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, handleDelete, user }) => {
   const [extended, setExtended] = useState(false);
 
   const closedBlogStyle = {
@@ -34,6 +34,12 @@ const Blog = ({ blog, updateBlog }) => {
     updateBlog(newBlog);
   };
 
+  const remove = (blog) => {
+    if (window.confirm(`Delete blog "${blog.title}" by ${blog.author}?`)) {
+        handleDelete(blog);
+    };
+  };
+
   if (!extended) {
     return (
       <div style={closedBlogStyle}>
@@ -47,7 +53,8 @@ const Blog = ({ blog, updateBlog }) => {
       {blog.title}, by {blog.author} <button onClick={toggleExtended}>Hide</button> <br />
       <a href={blog.url} target='_blank'>{blog.url}</a> <br />
       {blog.likes} like{blog.likes!==1 && 's'} <button onClick={() => handleLike(blog)}>Like</button><br />
-      Blog added by user {blog.user.username}
+      Blog added by user {blog.user.username} <br />
+      {(blog.user.username===user.username) && <button onClick={() => remove(blog)}>Delete blog</button>}
     </div> 
   )
 };

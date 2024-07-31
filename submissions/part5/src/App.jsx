@@ -94,7 +94,14 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility();
       const returnedBlog = await blogService.create(blogObject);
-      setBlogs(blogs.concat(returnedBlog));
+      const sortedBlogs = blogs.concat({ ...returnedBlog, user: user});
+      if (sorting==='likes') {
+        sortedBlogs.sort((a, b) => b[sorting] - a[sorting]);
+      } else {
+        sortedBlogs.sort((a, b) => a[sorting].localeCompare(b[sorting]));
+      };
+      
+      setBlogs(sortedBlogs);
 
       setNotif({ text:`New blog "${returnedBlog.title}" by ${returnedBlog.author} added`, colour:"green" });
       setTimeout(() => {
@@ -124,8 +131,28 @@ const App = () => {
       };
       setBlogs(newBlogs);
     } catch (exception) {
-      console.log(exception)
+      setBlogs(blogs.filter(blog => blog.id !== blogObject.id));
       setNotif({ text:'This blog has already been deleted from server', colour:'red' });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
+    };
+  };
+
+  const handleDeleteBlog = async (blogObject) => {
+    try {
+      await blogService.deleteBlog(blogObject.id);
+      setBlogs(blogs.filter(blog => blog.id !== blogObject.id));
+      setNotif({ text:`Deleted "${blogObject.title}" by ${blogObject.author}`, colour:'green' });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
+    } catch (exception) {
+      if (exception.response.status === 401) {
+        window.localStorage.removeItem('loggedBlogAppUser');
+        setUser(null);
+      };
+      setNotif({ text: exception.response.data.error, colour:'red' });
       setTimeout(() => {
         setNotif({ ...notif, text: null })
       }, timeNotif);
@@ -177,7 +204,7 @@ const App = () => {
       <div>
         <SortMenu onSelect={selectSort} />
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} handleDelete={handleDeleteBlog} user={user} />
         )}
       </div>
       
