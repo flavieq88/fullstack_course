@@ -96,6 +96,21 @@ const App = () => {
     };
   };
 
+  const updateBlog = async (blogObject) => {
+    console.log(blogObject);
+    try {
+      const newBlog = { ...blogObject, user: blogObject.user.id };
+      const returnedBlog = await blogService.update(newBlog);
+      returnedBlog.user = blogObject.user
+      setBlogs(blogs.map(blog => blog.id === blogObject.id ? returnedBlog : blog));
+    } catch (exception) {
+      setNotif({ text:'This blog has already been deleted from server', colour:'red' });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null })
+      }, timeNotif);
+    };
+  };
+
   if (user === null) {
     return (
       <div>
@@ -131,8 +146,7 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification text={notif.text} colour={notif.colour}/>
       <p>
-        {user.name} is signed in.
-        <button onClick={handleLogout}>Log out</button>
+        {user.name} is signed in. <button onClick={handleLogout}>Log out</button>
       </p>
       <Togglable buttonLabel='Create new blog' ref={blogFormRef}>
         <BlogForm addBlog={addBlog} />
@@ -141,7 +155,7 @@ const App = () => {
       <br />
       <div>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
         )}
       </div>
       
