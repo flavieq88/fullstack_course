@@ -36,27 +36,27 @@ const Blog = ({ blog, updateBlog, handleDelete, user }) => {
 
   const remove = (blog) => {
     if (window.confirm(`Delete blog "${blog.title}" by ${blog.author}?`)) {
-        handleDelete(blog);
-    };
+      handleDelete(blog);
+    }
   };
 
   if (!extended) {
     return (
       <div style={closedBlogStyle}>
         {blog.title}, by {blog.author} <button onClick={toggleExtended}>View</button>
-      </div>  
+      </div>
     );
-  };
+  }
 
   return (
     <div style={openBlogStyle}>
       {blog.title}, by {blog.author} <button onClick={toggleExtended}>Hide</button> <br />
-      <a href={blog.url} target='_blank'>{blog.url}</a> <br />
+      <a href={blog.url}>{blog.url}</a> <br />
       {blog.likes} like{blog.likes!==1 && 's'} <button onClick={() => handleLike(blog)}>Like</button><br />
       Blog added by user {blog.user.username} <br />
       {(blog.user.username===user.username) && <button onClick={() => remove(blog)}>Delete blog</button>}
-    </div> 
-  )
+    </div>
+  );
 };
 
 export default Blog;

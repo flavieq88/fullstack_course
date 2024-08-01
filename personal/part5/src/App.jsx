@@ -18,8 +18,8 @@ const Footer = () => {
       <br />
       <em>Note app following the FullStackOpen course of the Department of Computer Science, University of Helsinki 2024</em>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const [notes, setNotes] = useState(null);
@@ -33,7 +33,7 @@ const App = () => {
     noteService
       .getAll()
       .then(initialNotes => {
-        setNotes(initialNotes)
+        setNotes(initialNotes);
       });
   }, []);
 
@@ -43,7 +43,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
       noteService.setToken(user.token);
-    };
+    }
   }, []);
 
   const noteFormRef = useRef();
@@ -51,44 +51,44 @@ const App = () => {
 
   if (!notes) {
     return null;
-  };
+  }
 
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisibility();
     noteService
       .create(noteObject)
       .then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
+        setNotes(notes.concat(returnedNote));
       })
       .catch(error => {
         setErrorMessage(
           error.response.data.error
         );
         setTimeout(() => {
-          setErrorMessage(null)
+          setErrorMessage(null);
         }, 3000);
       });
   };
 
   const notesToShow = showAll //condition
-  ? notes //if true
-  : notes.filter(note => note.important); //if false, only show the important notes
-  
+    ? notes //if true
+    : notes.filter(note => note.important); //if false, only show the important notes
+
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id);
     const changedNote = { ...note, important: !note.important };
-    
+
     noteService
       .update(id, changedNote)
       .then(returnedNote => {
-        setNotes(notes.map(n => n.id !== id ? n : returnedNote)) //if correct ID then update new note
+        setNotes(notes.map(n => n.id !== id ? n : returnedNote)); //if correct ID then update new note
       })
       .catch(error => {
         setErrorMessage(
           `Note '${note.content}' was already removed from server`
         );
         setTimeout(() => {
-          setErrorMessage(null)
+          setErrorMessage(null);
         }, 5000);
         setNotes(notes.filter(n => n.id !== id)); //filter returns array containing only elements that satisfy the condition
       });
@@ -96,7 +96,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -116,7 +116,7 @@ const App = () => {
       }, 3000);
       setUsername('');
       setPassword('');
-    };
+    }
   };
 
   const handleLogout = () => {
@@ -144,11 +144,11 @@ const App = () => {
 
       {user && <div>
         <p>
-          {user.name} logged in 
+          {user.name} logged in
           <button onClick={handleLogout}>Log out</button>
         </p>
         <Togglable buttonLabel='new note' ref={noteFormRef}>
-          <NoteForm 
+          <NoteForm
             createNote={addNote}
           />
         </Togglable>
@@ -163,10 +163,10 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => 
-          <Note 
-            key={note.id} 
-            note={note} 
+        {notesToShow.map(note =>
+          <Note
+            key={note.id}
+            note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
           />
         )}

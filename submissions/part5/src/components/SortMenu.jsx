@@ -1,7 +1,7 @@
 const SortMenu = ({ onSelect }) => {
   const changeSelect = (event) => {
-    onSelect(event.target.value)
-  }
+    onSelect(event.target.value);
+  };
   return (
     <div>
       Sort blogs by:&nbsp;
