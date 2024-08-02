@@ -3,7 +3,7 @@ import NoteForm from '../src/components/NoteForm';
 import userEvent from '@testing-library/user-event';
 
 describe('<NoteForm />', () => {
-  test('updatess parent state and calls onSubmit', async () => {
+  test('updates parent state and calls onSubmit', async () => {
     const createNote = vi.fn();
     const user = userEvent.setup();
 
