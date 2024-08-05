@@ -153,9 +153,7 @@ const App = () => {
           />
         </Togglable>
       </div>
-      }
-
-      <h2>Notes</h2>
+      } <br />
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
