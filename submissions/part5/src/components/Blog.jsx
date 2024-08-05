@@ -38,7 +38,7 @@ const Blog = ({ blog, updateBlog, handleDelete, user }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blog.title}, by {blog.author} <button onClick={toggleExtended}>{label}</button> <br />
       <div style={hiddenBlogStyle} className='extendedInfo'>
         <a href={blog.url}>{blog.url}</a> <br />

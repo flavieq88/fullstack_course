@@ -55,7 +55,6 @@ describe('Note app', () =>  {
       });
 
       test('importance can be changed for one of the notes', async ({ page }) => {
-        await page.pause();
         await page.getByText('second note')
           .getByRole('button', { name: 'make not important' }).click();
         await expect(page.getByText('make important')).toBeVisible();
