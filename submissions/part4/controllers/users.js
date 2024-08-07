@@ -11,7 +11,7 @@ usersRouter.post('/', async (request, response, next) => {
   const { username, name, password } = request.body;
 
   if (!password || password.length < 3) {
-    return response.status(400).json({ error: 'password invalid' });
+    return response.status(400).json({ error: 'Invalid password' });
   };
 
   const passwordHash = await bcrypt.hash(password, 10); //use 10 salt rounds

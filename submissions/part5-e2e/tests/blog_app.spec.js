@@ -15,9 +15,8 @@ describe('Blog app', () => {
   });
 
   test('Login form is shown', async ({ page }) => {
-    await expect(page.getByText('Username:')).toBeVisible();
-    await expect(page.getByText('Password:')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Log in' })).toBeVisible();
+    await expect(page.locator('.loginForm')).toBeVisible();
+    await expect(page.locator('.signupForm')).toBeVisible();
   });
 
   describe('Login', () => {

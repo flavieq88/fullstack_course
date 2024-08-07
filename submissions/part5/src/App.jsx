@@ -4,13 +4,19 @@ import Notification from './components/Notification';
 import BlogForm from './components/BlogForm';
 import SortMenu from './components/SortMenu';
 import Togglable from './components/Togglable';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import userService from './services/users';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [newUsername, setNewUsername] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [newName, setNewName] = useState('');
   const [user, setUser] = useState(null);
   const [notif, setNotif] = useState({ text: null, color: 'green' });
   const [sorting, setSorting] = useState('likes');
@@ -65,7 +71,54 @@ const App = () => {
       setTimeout(() => {
         setNotif({ ...notif, text: null });
       }, timeNotif);
+      setUsername('');
       setPassword('');
+    }
+  };
+
+  const handleSignup = async (event) => {
+    event.preventDefault();
+
+    try {
+      await userService.signup({
+        username: newUsername,
+        name: newName,
+        password: newPassword
+      });
+
+      const user = await loginService.login({
+        username: newUsername,
+        password: newPassword,
+      });
+
+      blogService.setToken(user.token);
+      window.localStorage.setItem(
+        'loggedBlogAppUser', JSON.stringify(user)
+      );
+
+      setNotif({ text:`${user.name} successfully signed in`, color:'green' });
+      setTimeout(() => {
+        setNotif({ ...notif, text: null });
+      }, timeNotif);
+
+      setUser(user);
+      setNewUsername('');
+      setNewPassword('');
+      setNewName('');
+
+    } catch (exception) {
+      if (exception.response.data.error.includes('unique')) {
+        setNotif({ text: 'Username already taken', color:'red' });
+      }
+      else {
+        setNotif({ text: exception.response.data.error, color:'red' });
+      };
+      setTimeout(() => {
+        setNotif({ ...notif, text: null });
+      }, timeNotif);
+      setNewUsername('');
+      setNewPassword('');
+      setNewName('');
     }
   };
 
@@ -162,31 +215,25 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to Blog application</h2>
+        <h2>Log in to Blog list</h2>
         <Notification text={notif.text} color={notif.color} />
-        <form onSubmit={handleLogin}>
-          <div>
-            Username:
-            <input
-              type='text'
-              value={username}
-              name='Username'
-              onChange={({ target }) => setUsername(target.value)}
-              data-testid='username'
-            />
-          </div>
-          <div>
-            Password:
-            <input
-              type='password'
-              value={password}
-              name='Password'
-              onChange={({ target }) => setPassword(target.value)}
-              data-testid='password'
-            />
-          </div>
-          <button type="submit">Log in</button>
-        </form>
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+        <br />
+        <SignupForm
+          username={newUsername}
+          password={newPassword}
+          name={newName}
+          handleUsernameChange={({ target }) => setNewUsername(target.value)}
+          handlePasswordChange={({ target }) => setNewPassword(target.value)}
+          handleNameChange={({ target }) => setNewName(target.value)}
+          handleSubmit={handleSignup}
+        />
       </div>
     );
   }
