@@ -7,7 +7,7 @@
     },
     {
       "content": "state changes are made with actions",
-      "important": false,
+      "important": true,
       "id": "2"
     },
     {
@@ -19,6 +19,16 @@
       "id": "1ae7",
       "content": "yeeeeehaw",
       "important": false
+    },
+    {
+      "id": "cf86",
+      "content": "This note was added through notes-query!",
+      "important": true
+    },
+    {
+      "id": "9c01",
+      "content": "hohoho",
+      "important": true
     }
   ]
 }
