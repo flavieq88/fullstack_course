@@ -1,0 +1,96 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "content": "custom-hooks are awesome!"
+    },
+    {
+      "id": 2,
+      "content": "best feature ever <3"
+    },
+    {
+      "content": "asdasdarewwrer",
+      "id": 3
+    },
+    {
+      "content": "I am testiing a reset function!",
+      "id": 4
+    },
+    {
+      "content": "sdfsdfsdfsd",
+      "id": 5
+    },
+    {
+      "content": "wrtteertert",
+      "id": 6
+    },
+    {
+      "content": "rrrrrrrr",
+      "id": 7
+    },
+    {
+      "content": "i had to change the npm run server command",
+      "id": 8
+    },
+    {
+      "content": "sdfsdfsdf",
+      "id": 9
+    },
+    {
+      "content": "sadasdf",
+      "id": 10
+    }
+  ],
+  "persons": [
+    {
+      "id": 1,
+      "name": "mluukkai",
+      "number": "040-5483923"
+    },
+    {
+      "id": 2,
+      "name": "hellas",
+      "number": "012-123123"
+    },
+    {
+      "name": "dasdasd",
+      "number": "asdasdasd",
+      "id": 3
+    },
+    {
+      "name": "retertre",
+      "number": "erterter",
+      "id": 4
+    },
+    {
+      "name": "asdasd",
+      "number": "asdasdasd",
+      "id": 5
+    },
+    {
+      "name": "dqwdqw",
+      "number": "qdwqwd",
+      "id": 6
+    },
+    {
+      "name": "weeee",
+      "number": "weew",
+      "id": 7
+    },
+    {
+      "name": "erter",
+      "number": "ertertertret",
+      "id": 8
+    },
+    {
+      "name": "flavie",
+      "number": "3242 234 24 453 34345",
+      "id": 9
+    },
+    {
+      "name": "tryrt",
+      "number": "hfghfgh",
+      "id": 10
+    }
+  ]
+}
