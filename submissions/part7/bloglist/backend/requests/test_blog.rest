@@ -1,0 +1,32 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZsYXZpZXE4OCIsImlkIjoiNjZhNDEzMzIxYTFiZjE3YmExODcxZmE3IiwiaWF0IjoxNzIyMDMzMjMwLCJleHAiOjE3MjIwMzY4MzB9.Qg9YjTKCAc_2zJyPRmSuXUcqKfPqgEWXjXaruc52XTY
+
+{
+  "title": "Behind the Design: L. M. Montgomery Commemorative $1 Circulation Coin",
+  "author": "Canadiana",
+  "url": "https://www.mint.ca/en/blog/2024-06-behind-the-design-l-m-montgomery-commemorative-circulation-coin"
+}
+
+###
+GET http://localhost:3003/api/blogs
+
+###
+
+DELETE http://localhost:3003/api/blogs/66a4246b433ff13260d91ebb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZsYXZpZXE4OCIsImlkIjoiNjZhNDEzMzIxYTFiZjE3YmExODcxZmE3IiwiaWF0IjoxNzIyMDk3MDE3LCJleHAiOjE3MjIxMDA2MTd9.uocU72quSWkikgRpt7BcwK5wvM3t1YAIFMroyHXHmdI
+
+###
+DELETE http://localhost:3003/api/blogs/66a4246b433ff13260d91ebb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZsYXZpZXE4OCIsImlkIjoiNjZhNDEzMzIxYTFiZjE3YmExODcxZmE3IiwiaWF0IjoxNzIyMDMzMjMwLCJleHAiOjE3MjIwMzY4MzB9.Qg9YjTKCAc_2zJyPRmSuXUcqKfPqgEWXjXaruc52XTY
+
+###
+PUT http://localhost:3003/api/blogs/66a4260d1d720c92ac6134e4
+Content-Type: application/json
+
+{
+  "title": "Behind the Design: L. M. Montgomery Commemorative $1 Circulation Coin",
+  "author": "Royal Canadian Mint",
+  "url": "https://www.mint.ca/en/blog/2024-06-behind-the-design-l-m-montgomery-commemorative-circulation-coin",
+  "likes": 2
+}
