@@ -7,4 +7,4 @@ Certificate of completion: https://studies.cs.helsinki.fi/stats/api/certificate/
 
 ![image](https://github.com/user-attachments/assets/9031ebd5-7069-4d59-a13b-74659d122c8a)
 
-I received a grade of 5 (highest grade) and 7 ECTS credits.
+I received a grade of 5 (highest grade) and can obtain 7 ECTS credits.
